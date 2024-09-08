@@ -6,8 +6,8 @@ def validate_video_extension(value):
     if not value.name.endswith(('.mp4')):
         raise ValidationError("Only video files are allowed.")
 
-class Text(models.Model):
-    text = models.CharField(max_length = 50)
+class Video(models.Model):
+    text = models.CharField(max_length = 150)
     video = models.FileField(upload_to = 'video', validators = [validate_video_extension])
     created_at = models.DateField(auto_now_add = True)
 
