@@ -1,5 +1,11 @@
 from django import forms
+from .models import Video
 
-class TextForm(forms.Form):
-    text = forms.CharField(max_length = 150, required = True,
-                           widget = forms.TextInput(attrs = {'placeholder': 'Enter text'}))
+class VideoForm(forms.ModelForm):
+    class Meta:
+        model = Video
+        fields = ['text', 'width', 'height', 'duration', 'fps', 'font_size', 'text_color', 'bg_color']
+        widgets = {
+            'text_color': forms.TextInput(attrs = {'type': 'color'}),
+            'bg_color': forms.TextInput(attrs = {'type': 'color'}),
+        }

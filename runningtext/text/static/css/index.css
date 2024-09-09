@@ -1,4 +1,4 @@
-* {
+/* * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -48,5 +48,81 @@ video {
     margin-top: 20px;
     width: 400px;
     height: 225px;
+    border-radius: 10px;
+}
+
+input[type="color"] {
+    width: 100px;
+    height: 40px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="file"] {
+    margin-bottom: 20px;
+}
+ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+}
+
+.container {
+    text-align: center;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="color"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+input[type="submit"] {
+    background-color: #5c85d6;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+input[type="submit"]:hover {
+    background-color: #486db0;
+}
+
+label {
+    display: block;
+    text-align: left;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+video {
+    margin-top: 20px;
+    width: 100%;
+    height: auto;
     border-radius: 10px;
 }
