@@ -53,6 +53,6 @@
 
 Благодарю за предоставленное тестовое задание. Готов ответить на вопросы и обсудить детали дальнейших шагов.
 
-`aren.allahverdyan@gmail.com`
+`aren.allahverdyan12@gmail.com`
 
 `https:/t.me/arenallahverdyan`
