@@ -1,0 +1,79 @@
+services:
+  redis:
+    image: redis:7.0.4
+    ports:
+      - "6379:6379"
+
+  db:
+    image: postgres:14.5
+    restart: always
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  celery:
+    build: .
+    working_dir: /code/runningtext
+    command: celery -A runningtext worker --loglevel=info
+    volumes:
+      - .:/code
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - redis
+      - rabbitmq
+
+  web:
+    build: .
+    working_dir: /code/runningtext
+    command:  ["gunicorn", "--pythonpath", "/code/runningtext", "runningtext.wsgi:application",
+               "--bind", "0.0.0.0:8000"]
+    restart: "always"
+    volumes:
+      - .:/code
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "8000:8000"
+    depends_on:
+      - rabbitmq
+
+  nginx:
+    image: nginx:1.23.1
+    restart: always
+    volumes:
+      - ./config/nginx:/etc/nginx/templates
+      - .:/code
+    ports:
+      - "80:80"
+
+  daphne:
+    build: .
+    working_dir: /code/runningtext/
+    command: ["daphne", "-u", "/code/runningtext/daphne.sock",
+              "runningtext.asgi:application"]
+    restart: always
+    volumes:
+      - .:/code
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - redis

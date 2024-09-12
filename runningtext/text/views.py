@@ -1,7 +1,8 @@
 from django.shortcuts import render
+from django.urls import reverse
 from .models import Video
 from .forms import VideoForm
-from .utils import VideoCreator
+from .tasks import create_video_task
 
 def create_video(request):
     if request.method == 'POST':
@@ -14,13 +15,10 @@ def create_video(request):
                 # if text has already created we dont create the new one
                 video = videos.first()
             else:
-                video = form.save(commit = False)
-                video_creator = VideoCreator(video)
-                video_url = video_creator.create_video()
-                video.video = video_url
-                video.save()
-
-            context = {'form': form, 'video': video}
+                video = form.save()
+             
+            create_video_task.delay(video.id)
+            context = {'form': form, 'video_id': video.id} 
         else:
             context = {'form': form, 'error': 'Invalid input'}
     else:

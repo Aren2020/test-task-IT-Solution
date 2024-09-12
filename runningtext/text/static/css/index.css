@@ -79,6 +79,8 @@ body {
 }
 
 .container {
+    /* display: flex;
+    flex-direction: column; */
     text-align: center;
     background-color: white;
     padding: 20px;
@@ -125,4 +127,10 @@ video {
     width: 100%;
     height: auto;
     border-radius: 10px;
+}
+
+#loading {
+    display: none;
+    color: red;
+    font-size: 20px;
 }
