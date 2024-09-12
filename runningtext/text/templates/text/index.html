@@ -8,29 +8,26 @@
     <title>Centered Form with Video</title>
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
 </head>
-<body class="body">
-    <div class="container">
-        <p id="loading">Loading...</p>
+<body>
+    <div class="container" id="container">
         <form method="post">
             {{ form.as_p }}
             <br>
             <input type="submit" value="Submit">
             {% csrf_token %}
         </form>
-        
+
         <p id="error"></p>
+        
     </div>
     {% if video_id %}
         <script>
-            loading = document.getElementById('loading')
-            loading.style.display = 'block';
-
             const socket = new WebSocket(`ws://${window.location.host}/ws/video/text/{{ video_id }}/`);
 
             socket.onmessage = function(event) {
                 const data = JSON.parse(event.data);
                 if (data.video_url){
-                    document.getElementById('body').innerHTML += `
+                    document.getElementById('container').innerHTML += `
                         <video width="${ data.width }" height="${ data.height }" controls>
                             <source src="${ data.video_url }" type="video/mp4">
                             Your browser does not support the video tag.
@@ -38,9 +35,8 @@
                     `;
                 }
                 else {
-                    document.getElementById('error').innerHTML = 'No image available';
+                    document.getElementById('error').innerHTML = "No image available";
                 }
-                loading.style.display = 'none';
             };
 
             socket.onclose = function(event) {
